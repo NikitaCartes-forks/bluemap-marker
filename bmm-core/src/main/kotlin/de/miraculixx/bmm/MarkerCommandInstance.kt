@@ -293,17 +293,11 @@ interface MarkerCommandInstance {
         }
     }
 
-    fun setPlayerVisibility(sender: Audience, targets: List<Pair<UUID, String>>, visible: Boolean) {
+    fun setPlayerVisibility(sender: Audience, target: UUID, visible: Boolean) {
         BlueMapAPI.getInstance().ifPresentOrElse({ api ->
-            if (targets.isEmpty()) {
-                sender.sendMessage(prefix + cmp("Could not found given player!", cError))
-                return@ifPresentOrElse
-            }
-            targets.forEach { target ->
-                api.webApp.setPlayerVisibility(target.first, visible)
-                val info = if (visible) cmp("visible", cSuccess) else cmp("invisible", cError)
-                sender.sendMessage(prefix + cmp(target.second, cMark) + cmp(" is now ") + info + cmp(" on your BlueMap!"))
-            }
+            api.webApp.setPlayerVisibility(target, visible)
+            val info = if (visible) cmp("visible", cSuccess) else cmp("invisible", cError)
+            sender.sendMessage(prefix + cmp("You are now ") + info + cmp(" on your BlueMap!"))
         }) {
             sender.sendMessage(prefix + cmp("Failed to connect to BlueMap! Are you using the latest version?", cError))
         }

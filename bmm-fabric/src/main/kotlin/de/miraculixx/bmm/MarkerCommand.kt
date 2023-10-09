@@ -438,11 +438,8 @@ class MarkerCommand : MarkerCommandInstance {
     }
 
     private fun LiteralCommandBuilder<CommandSourceStack>.visibility(visible: Boolean) {
-        argument<GameProfileArgument.Result>("target", GameProfileArgument.gameProfile()) { target ->
-            runs {
-                val profiles = target().getNames(source).map { it.id to it.name }
-                setPlayerVisibility(source, profiles, visible)
-            }
+        runs {
+            source.player?.let { setPlayerVisibility(source, it.uuid, visible) }
         }
     }
 }

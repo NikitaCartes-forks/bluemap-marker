@@ -416,8 +416,7 @@ class MarkerCommand : MarkerCommandInstance {
     private fun Argument<*>.visibility(visible: Boolean) {
         entitySelectorArgumentManyPlayers("target") {
             playerExecutor { sender, args ->
-                val profiles = (args[0] as Collection<Player>).map { it.uniqueId to it.name }
-                setPlayerVisibility(sender, profiles, visible)
+                sender.player?.let { setPlayerVisibility(sender, it.uniqueId, visible) }
             }
         }
     }
